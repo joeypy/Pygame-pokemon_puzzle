@@ -10,6 +10,7 @@ import random
 import pygame
 
 
+# Check if game is over
 def is_game_over(board, size):
     assert isinstance(size, int)
     num_cells = size * size
@@ -19,6 +20,7 @@ def is_game_over(board, size):
     return True
 
 
+# Move the piece to right
 def move_right(board, blank_cell_idx, num_cols):
     if blank_cell_idx % num_cols == 0:
         return blank_cell_idx
@@ -26,6 +28,7 @@ def move_right(board, blank_cell_idx, num_cols):
     return blank_cell_idx - 1
 
 
+# Move the piece to left
 def move_left(board, blank_cell_idx, num_cols):
     if (blank_cell_idx + 1) % num_cols == 0:
         return blank_cell_idx
@@ -33,6 +36,7 @@ def move_left(board, blank_cell_idx, num_cols):
     return blank_cell_idx + 1
 
 
+# Move the piece to down
 def move_down(board, blank_cell_idx, num_cols):
     if blank_cell_idx < num_cols:
         return blank_cell_idx
@@ -40,6 +44,7 @@ def move_down(board, blank_cell_idx, num_cols):
     return blank_cell_idx - num_cols
 
 
+# Move the piece to up
 def move_up(board, blank_cell_idx, num_rows, num_cols):
     if blank_cell_idx >= (num_rows - 1) * num_cols:
         return blank_cell_idx
@@ -47,6 +52,7 @@ def move_up(board, blank_cell_idx, num_rows, num_cols):
     return blank_cell_idx + num_cols
 
 
+# Create the board game
 def create_board(num_rows, num_cols, num_cells):
     board = []
 
@@ -69,12 +75,14 @@ def create_board(num_rows, num_cols, num_cells):
     return board, blank_cell_idx
 
 
+# Read the image files
 def get_image_paths(root_dir):
     image_names = os.listdir(root_dir)
     assert len(image_names) > 0
     return os.path.join(root_dir, random.choice(image_names))
 
 
+# Show end interface of the game
 def show_end_interface(screen, width, height):
     screen.fill(cfg.BACKGROUND_COLOR)
     font = pygame.font.Font(cfg.FONT_PATH, width // 15)
@@ -93,6 +101,7 @@ def show_end_interface(screen, width, height):
         pygame.display.update()
 
 
+# Show the start menu interface
 def show_start_interface(screen, width, height):
     screen.fill(cfg.BACKGROUND_COLOR)
     t_font = pygame.font.Font(cfg.FONT_PATH, width // 4)
@@ -112,6 +121,7 @@ def show_start_interface(screen, width, height):
     screen.blit(title, t_rectangle)
     screen.blit(content_1, c_rectangle_1)
     screen.blit(content_2, c_rectangle_2)
+    # Check the play mode: 3x3, 4x4, 5x5
     while True:
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -127,6 +137,7 @@ def show_start_interface(screen, width, height):
         pygame.display.update()
 
 
+# Main game function
 def main():
     pygame.init()
     clock = pygame.time.Clock()
@@ -152,12 +163,14 @@ def main():
             break
     is_running = True
 
+    # The game logic
     while is_running:
         for event in pygame.event.get():
             if(event.type == pygame.QUIT) or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 pygame.quit()
                 sys.exit()
 
+            # Check events from the arrows keyboard or letters
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
                     blank_cell_idx = move_left(game_board, blank_cell_idx, num_cols)
@@ -168,6 +181,7 @@ def main():
                 elif event.key == pygame.K_DOWN or event.key == ord('s'):
                     blank_cell_idx = move_down(game_board, blank_cell_idx, num_cols)
 
+            # Check events from the mouse
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 x, y = pygame.mouse.get_pos()
                 x_position = x // cell_width
@@ -182,6 +196,7 @@ def main():
                 elif idx == blank_cell_idx - num_cols:
                     blank_cell_idx = move_down(game_board, blank_cell_idx, num_cols)
 
+        # Check if game finished
         if is_game_over(game_board, size):
             game_board[blank_cell_idx] = num_cells - 1
             is_running = False
