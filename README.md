@@ -11,6 +11,6 @@ A simple game pokemon puzzle in pygame
 - To play again in the final screen, press ENTER.
 
 ### Image
-![Image](resources/manu.PNG) ![Image](resources/game.PNG)
+![Image](resources/menu.PNG) ![Image](resources/game.PNG)
 
 
