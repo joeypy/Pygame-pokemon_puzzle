@@ -97,7 +97,7 @@ def show_end_interface(screen, width, height):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                show_start_interface(screen, width, height)
+                main()
         pygame.display.update()
 
 
